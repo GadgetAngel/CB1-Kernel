@@ -423,7 +423,7 @@
 			ext_rmii_pins: rmii_pins {
 				pins = "PA0", "PA1", "PA2", "PA3", "PA4",
 				       "PA5", "PA6", "PA7", "PA8", "PA9";
-				function = "emac";
+				function = "emac0";
 				drive-strength = <40>;
 			};
 
@@ -614,6 +614,57 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 		};
+        
+		emac1: ethernet@5020000 {
+			compatible = "allwinner,sun50i-h616-emac",
+				     "allwinner,sun50i-a64-emac";
+			syscon = <&syscon>;
+			reg = <0x05020000 0x10000>;
+			interrupts = <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>;
+			interrupt-names = "macirq";
+			resets = <&ccu RST_BUS_EMAC0>;
+			reset-names = "stmmaceth";
+			clocks = <&ccu CLK_BUS_EMAC0>;
+			clock-names = "stmmaceth";
+			status = "okay";
+
+			mdio0: mdio {
+				compatible = "snps,dwmac-mdio";
+				#address-cells = <1>;
+				#size-cells = <0>;
+			};
+		};
+
+		emac0: ethernet@5030000 { 
+			compatible = "allwinner,sunxi-gmac";
+			syscon = <&syscon>;
+			reg = <0x05030000 0x10000>,
+                  <0x03000034 0x4>;
+			reg-names = "gmac1_reg","ephy_reg";                  
+			interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
+			interrupt-names = "gmacirq";
+			resets = <&ccu RST_BUS_EMAC1>;
+			reset-names = "stmmaceth";            
+			clocks = <&ccu CLK_BUS_EMAC1>,<&ccu CLK_EMAC_25M>;
+			clock-names = "gmac1_clk","ephy_25m_clk";
+			pinctrl-0 = <&ext_rmii_pins>;
+			pinctrl-names = "default";
+			phy-mode = "rmii";
+			tx-delay = <7>;
+			rx-delay = <31>;
+			phy-rst;
+			gmac-power0;
+			gmac-power1;
+			gmac-power2;            
+			status = "okay";
+            
+			mdio0: mdio {
+				compatible = "snps,dwmac-mdio";
+				#address-cells = <1>;
+				#size-cells = <0>;
+			};
+
+		};        
 
 		uart0: serial@5000000 {
 			compatible = "snps,dw-apb-uart";

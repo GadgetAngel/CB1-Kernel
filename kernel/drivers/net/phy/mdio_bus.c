@@ -23,7 +23,7 @@
 #include <linux/mm.h>
 #include <linux/module.h>
 #include <linux/netdevice.h>
-#include <linux/of_device.h>
+#include <linux/of_device.h> 
 #include <linux/of_gpio.h>
 #include <linux/of_mdio.h>
 #include <linux/phy.h>
@@ -883,6 +883,8 @@ int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
     mutex_lock(&bus->mdio_lock);
     retval = __mdiobus_read(bus, addr, regnum);
     mutex_unlock(&bus->mdio_lock);
+    
+    printk("==> mdiobus_read: addr = %d regnum = %d , retval = %04x\n",addr,regnum,retval);
 
     return retval;
 }

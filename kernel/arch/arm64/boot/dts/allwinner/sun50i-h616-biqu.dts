@@ -36,9 +36,9 @@
 		};
 	};
 
-	leds {
+    leds {
 		compatible = "gpio-leds";
-        
+
 		led-0 {
 			function = LED_FUNCTION_POWER;
 			color = <LED_COLOR_ID_RED>;
@@ -116,11 +116,6 @@
 	};
 };
 
-&usbphy {
-	usb1_vbus-supply = <&reg_usb1_vbus>;
-	status = "okay";
-};
-
 &ac200_ephy {
 	status = "okay";
 };
@@ -178,20 +173,12 @@
 	status = "okay";
 };
 
-&mdio0 {
+&mdio1 {
 	ext_rgmii_phy: ethernet-phy@1 {
 		compatible = "ethernet-phy-ieee802.3-c22";
 		reg = <1>;
 	};
 };
-
-// &emac1 {
-// 	pinctrl-names = "default";
-// 	pinctrl-0 = <&ext_rmii_pins>;
-// 	phy-mode = "rmii";
-// 	phy-handle = <&ext_rmii_phy>;
-// 	status = "okay";
-// };
 
 &emac1 {
 	pinctrl-names = "default";
@@ -204,10 +191,10 @@
 	status = "okay";
 };
 
-&mdio1 {
-	rmii_phy: ethernet-phy@1 {
+&mdio0 {
+	rmii_phy: ethernet-phy@0 {
 		compatible = "ethernet-phy-ieee802.3-c22";
-		reg = <1>;
+		reg = <0>;
 	};
 };
 
@@ -228,7 +215,7 @@
 	bus-width = <4>;
 	non-removable;
 	mmc-ddr-1_8v;
-	status = "okay";
+	status = "disabled";
 };
 
 &ohci0 {
@@ -367,6 +354,11 @@
 	status = "okay";
 };
 
+&usbphy {
+	usb1_vbus-supply = <&reg_usb1_vbus>;
+	status = "okay";
+};
+
 &i2c1 {
 	status = "disabled";
 };
@@ -376,7 +368,7 @@
 };
 
 &i2c3 {
-	status = "disabled";
+	status = "okay";
 };
 
 &i2c4 {

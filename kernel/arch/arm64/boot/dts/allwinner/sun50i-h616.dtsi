@@ -177,7 +177,7 @@
 
 		syscon: syscon@3000000 {
 			compatible = "allwinner,sun50i-h616-system-control";
-			reg = <0x03000000 0x1000>;
+			reg = <0x0300000 0x30>;
 			#address-cells = <1>;
 			#size-cells = <1>;
 			ranges;
@@ -270,9 +270,18 @@
 			pwm-base = <0x0>;
 			sunxi-pwms = <&pwm0>, <&ac200_pwm_clk>, <&pwm2>, <&pwm3>, <&pwm4>, <&pwm5>;
 			#pwm-cells = <3>;
-			status = "disabled";
+			status = "okay";
 		};
-
+ /*      
+		pwm: pwm@0300a000 {
+			compatible = "allwinner,sunxi-pwm";
+			reg = <0x0300a000 0x3ff>;
+			clocks = <&clk_pwm>;
+			pwm-number = <6>;
+			pwm-base = <0x0>;
+			pwms = <&pwm0>, <&pwm1>,<&pwm2>, <&pwm3>, <&pwm4>, <&pwm5>;
+		};        
+*/
 		pwm0: pwm0@0300a000 {
 			compatible = "allwinner,sunxi-pwm0";
 		};
@@ -312,9 +321,9 @@
 		};
 
 		pwm5: pwm5@0300a000 {
-			compatible = "allwinner,sunxi-pwm5";
-			pinctrl-names = "default";
+			compatible = "allwinner,sunxi-pwm5";			
 			pinctrl-0 = <&pwm5_pin>;
+            pinctrl-names = "default";
 		};
 
 		pio: pinctrl@300b000 {
@@ -397,7 +406,7 @@
 			};
 
 			pwm3_pin: pwm3-pin {
-				pins = "PH0";
+				pins = "PI13";
 				function = "pwm3";
 			};
 
@@ -408,7 +417,7 @@
 
 			pwm5_pin: pwm5-pin {
 				pins = "PA12";
-				function = "pwm4";
+				function = "pwm5";
 			};
 
 			mmc0_pins: mmc0-pins {
@@ -878,26 +887,7 @@
 			reset-names = "stmmaceth";
 			clocks = <&ccu CLK_BUS_EMAC0>;
 			clock-names = "stmmaceth";
-			status = "disabled";
-
-			mdio0: mdio {
-				compatible = "snps,dwmac-mdio";
-				#address-cells = <1>;
-				#size-cells = <0>;
-			};
-		};
-
-		emac1: ethernet@5030000 {
-			compatible = "allwinner,sun50i-h616-emac";
-			syscon = <&syscon 1>;
-			reg = <0x05030000 0x10000>;
-			interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
-			interrupt-names = "macirq";
-			resets = <&ccu RST_BUS_EMAC1>;
-			reset-names = "stmmaceth";
-			clocks = <&ccu CLK_BUS_EMAC1>;
-			clock-names = "stmmaceth";
-			status = "disabled";
+			status = "okay";
 
 			mdio1: mdio {
 				compatible = "snps,dwmac-mdio";
@@ -905,6 +895,37 @@
 				#size-cells = <0>;
 			};
 		};
+
+		emac1: ethernet@5030000 { 
+			compatible = "allwinner,sunxi-gmac";
+			//syscon = <&syscon>;
+			reg = <0x05030000 0x10000>,
+                  <0x03000034 0x4>;
+			reg-names = "gmac1_reg","ephy_reg";                  
+			interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
+			interrupt-names = "gmacirq";
+			resets = <&ccu RST_BUS_EMAC1>;
+			reset-names = "stmmaceth";            
+			clocks = <&ccu CLK_BUS_EMAC1>,<&ccu CLK_EMAC_25M>;
+			clock-names = "bus-emac1","emac-25m";
+			pinctrl-0 = <&rmii_pins>;
+			pinctrl-names = "default";
+			phy-mode = "rmii";
+			tx-delay = <7>;
+			rx-delay = <31>;
+			phy-rst;
+			gmac-power0;
+			gmac-power1;
+			gmac-power2;            
+			status = "okay";
+            
+			mdio0: mdio {
+				compatible = "ethernet-phy-ieee802.3-c22";
+				#address-cells = <1>;
+				#size-cells = <0>;
+			};
+
+		}; 
 
 		usbotg: usb@5100000 {
 			compatible = "allwinner,sun50i-h616-musb",

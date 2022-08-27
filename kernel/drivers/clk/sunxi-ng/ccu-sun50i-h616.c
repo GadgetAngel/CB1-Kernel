@@ -475,8 +475,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE(spi1_clk, "spi1", nand_spi_parents, 0x944,
 static SUNXI_CCU_GATE(bus_spi0_clk, "bus-spi0", "ahb3", 0x96c, BIT(0), 0);
 static SUNXI_CCU_GATE(bus_spi1_clk, "bus-spi1", "ahb3", 0x96c, BIT(1), 0);
 
-static SUNXI_CCU_GATE(emac_25m_clk, "emac-25m", "ahb3", 0x970,
-		      BIT(31) | BIT(30), 0);
+static SUNXI_CCU_GATE(emac_25m_clk, "emac-25m", "ahb3", 0x970, BIT(31) | BIT(30), 0);
 
 static SUNXI_CCU_GATE(bus_emac0_clk, "bus-emac0", "ahb3", 0x97c, BIT(0), 0);
 static SUNXI_CCU_GATE(bus_emac1_clk, "bus-emac1", "ahb3", 0x97c, BIT(1), 0);
