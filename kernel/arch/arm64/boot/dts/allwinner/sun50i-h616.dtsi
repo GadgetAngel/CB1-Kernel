@@ -887,9 +887,9 @@
 			reset-names = "stmmaceth";
 			clocks = <&ccu CLK_BUS_EMAC0>;
 			clock-names = "stmmaceth";
-			status = "okay";
+            status = "disabled";
 
-			mdio1: mdio {
+			mdio0: mdio {
 				compatible = "snps,dwmac-mdio";
 				#address-cells = <1>;
 				#size-cells = <0>;
@@ -897,12 +897,23 @@
 		};
 
 		emac1: ethernet@5030000 { 
-			compatible = "allwinner,sunxi-gmac";
-			//syscon = <&syscon>;
+            // compatible = "allwinner,sun50i-h616-emac";
+            compatible = "allwinner,sunxi-gmac";
+			// syscon = <&syscon 1>;
+			// reg = <0x05030000 0x10000>;
+            // interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
+			// interrupt-names = "macirq";
+			// resets = <&ccu RST_BUS_EMAC1>;
+			// reset-names = "stmmaceth";
+			// clocks = <&ccu CLK_BUS_EMAC1>;
+			// clock-names = "stmmaceth";
+			// status = "disabled";
+
+			// syscon = <&syscon>;
 			reg = <0x05030000 0x10000>,
                   <0x03000034 0x4>;
-			reg-names = "gmac1_reg","ephy_reg";                  
-			interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
+			reg-names = "gmac1_reg","ephy_reg";      
+            interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;          
 			interrupt-names = "gmacirq";
 			resets = <&ccu RST_BUS_EMAC1>;
 			reset-names = "stmmaceth";            
@@ -917,15 +928,15 @@
 			gmac-power0;
 			gmac-power1;
 			gmac-power2;            
-			status = "okay";
-            
-			mdio0: mdio {
+            status = "disabled";
+
+			mdio1: mdio {
+                // compatible = "snps,dwmac-mdio";
 				compatible = "ethernet-phy-ieee802.3-c22";
 				#address-cells = <1>;
 				#size-cells = <0>;
 			};
-
-		}; 
+		};
 
 		usbotg: usb@5100000 {
 			compatible = "allwinner,sun50i-h616-musb",

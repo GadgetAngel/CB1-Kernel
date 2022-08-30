@@ -23,7 +23,7 @@
 #include <linux/mm.h>
 #include <linux/module.h>
 #include <linux/netdevice.h>
-#include <linux/of_device.h> 
+#include <linux/of_device.h>
 #include <linux/of_gpio.h>
 #include <linux/of_mdio.h>
 #include <linux/phy.h>
@@ -552,12 +552,14 @@ int __mdiobus_register(struct mii_bus *bus, struct module *owner)
     bus->state = MDIOBUS_UNREGISTERED;
 
     err = device_register(&bus->dev);
-    pr_err("test mii_bus %s failed to register\n", bus->id);
-
     if (err)
     {
         pr_err("mii_bus %s failed to register\n", bus->id);
         return -EINVAL;
+    }
+    else
+    {
+        printk("mii_bus %s register success!\n", bus->id);
     }
 
     mutex_init(&bus->mdio_lock);
@@ -883,8 +885,8 @@ int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
     mutex_lock(&bus->mdio_lock);
     retval = __mdiobus_read(bus, addr, regnum);
     mutex_unlock(&bus->mdio_lock);
-    
-    printk("==> mdiobus_read: addr = %d regnum = %d , retval = %04x\n",addr,regnum,retval);
+
+    printk("==> mdiobus_read: addr = %d regnum = %d , retval = %04x\n", addr, regnum, retval);
 
     return retval;
 }
